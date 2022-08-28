@@ -1,7 +1,7 @@
 from turtle import Screen
 from paddle import Paddle
 from mid_line import Mid_line
-from ScoreCard import Scoreboard
+from Computer_Scoreboard import Scoreboard
 from Ball import Ball
 from layout import Layout
 import time
