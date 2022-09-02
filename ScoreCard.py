@@ -1,3 +1,5 @@
+import datetime
+import time
 from email.policy import default
 from turtle import Turtle, Screen
 
@@ -8,6 +10,7 @@ FONT = ["courier", 18, "bold"]
 screen = Screen()
 
 
+screen.tracer(0)
 class Scoreboard(Turtle):
     def __init__(self):
         super(Scoreboard, self).__init__()
@@ -15,6 +18,8 @@ class Scoreboard(Turtle):
         self.color("white")
         self.l_score = 0
         self.r_score = 0
+        self.start_time = time.time()
+        self.timer = 0
         self.player1 = screen.textinput(title="Player 1 Name", prompt="Enter Name of Player for Left Paddle: ")
         if (self.player1 == ""):
             self.player1 = "Player 1"
@@ -28,6 +33,7 @@ class Scoreboard(Turtle):
         self.write(f"{self.player1}: {self.l_score}", False, align="center", font=FONT)
         self.goto(200, 270)
         self.write(f"{self.player2}: {self.r_score}", False, align="center", font=FONT)
+        # self.timer_function()
         self.hideturtle()
 
     def l_points(self):
@@ -40,10 +46,19 @@ class Scoreboard(Turtle):
         self.clear()
         self.update_Scoreboard()
 
+    # def timer_function(self):
+    #     self.goto(0,270)
+    #     self.timer = time.time() - self.start_time
+    #     self.clear()
+    #     self.write(f"Time: {int(self.timer)}", False, align="center", font=FONT)
+        # self.clear()
+
     def game_over(self, player_name, player_score):
         self.penup()
         self.goto(0, 0)
         self.color("red")
         self.hideturtle()
         self.clear()
-        self.write(f"Game Over. {player_name} won the Game with {player_score} Points.", False, align=CENTER, font=FONT)
+        self.write(f"Game Over.",False, align=CENTER, font=FONT)
+        self.goto(0, -30)
+        self.write(f"{player_name} won the Game with {player_score} Points.",False, align=CENTER, font=FONT)
