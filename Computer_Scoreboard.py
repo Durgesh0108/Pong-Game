@@ -44,4 +44,6 @@ class Scoreboard(Turtle):
         self.color("red")
         self.hideturtle()
         self.clear()
-        self.write(f"Game Over. {player_name} won the Game with {player_score} Points.", False, align=CENTER, font=FONT)
+        self.write(f"Game Over.", False, align=CENTER, font=FONT)
+        self.goto(0, -30)
+        self.write(f"{player_name} won the Game with {player_score} Points.",False, align=CENTER, font=FONT)
