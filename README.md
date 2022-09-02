@@ -14,3 +14,6 @@ MOve Down: "s"
 For Player 2:(Right Side):
 Move Up: "Up Arrow Key⬆️"
 Move Down: "Down Arrow Key⬇️"
+
+To Pause the Game:
+Press: "Space"
