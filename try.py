@@ -1,11 +1,13 @@
-from turtle import Screen
-from paddle import Paddle
-from mid_line import Mid_line
-from ScoreCard import Scoreboard
-from Ball import Ball
-from layout import Layout
 import time
+import turtle
+from turtle import Screen
+
+from Ball import Ball
+from ScoreCard import Scoreboard
+from layout import Layout
+from mid_line import Mid_line
 from music import Music
+from paddle import Paddle
 
 screen = Screen()
 screen.bgcolor("red")
@@ -32,75 +34,120 @@ screen.onkey(l_paddle.go_down, "s")
 screen.onkey(r_paddle.go_up, "Up")
 screen.onkey(r_paddle.go_down, "Down")
 
-
 game_is_On = True
 
+# time_limit = 0
+
+is_paused = False
+
+# Final = turtle.Turtle()
+# timer = turtle.Turtle()
+#
+# start_time = time.time()
+# final_time = 0
+# elapsed_time = int(time.time() - start_time)
+
+
+def pause():
+    global is_paused
+    if is_paused:
+        is_paused = False
+    else:
+        is_paused = True
+
+
+screen.onkey(pause, "space")
+
 while game_is_On:
-    # l_paddle.move()
-    time.sleep(0.06)
-    # winsound.PlaySound("SystemExit", winsound.SND_ASYNC)
-    # music.play_Background_music()
-    screen.update()
-    ball.move()
-    
+    # if timer is on:
+    # elapsed_time = int(time.time() - start_time)
+    # timer.penup()
+    # timer.color("White")
+    # timer.goto(0, 270)
+    # timer.clear()
+    # timer.write(f"Time: {elapsed_time}", False, align="center", font=("courier", 18, "bold"))
+    # timer.hideturtle()
+    # print(elapsed_time)
+    if not is_paused:
+        time.sleep(0.06)
+        screen.update()
+        ball.move()
 
-    # if(l_paddle.ycor() >= -205):
-    #     l_paddle.computer_move_up(ball.ycor())
+        # elapsed_time = int(time.time() - start_time)
+        # timer.penup()
+        # timer.color("White")
+        # timer.goto(0, 270)
+        # timer.clear()
+        # timer.write(f"Time: {elapsed_time}", False, align="center", font=("courier", 18, "bold"))
+        # timer.hideturtle()
 
-    # if(l_paddle.ycor() <= 205):
-    #     l_paddle.computer_move_down(ball.ycor())
+        # print(elapsed_time)
 
-    # if(l_paddle.ycor() >= -205 or l_paddle.ycor() <= 205):
-    #     l_paddle.movement()
+        # collision with upper and lower Wall
+        if ball.ycor() > 250 or ball.ycor() < -250:
+            ball.y_bounce()
 
-    # collision with upper and lower Wall
-    if ball.ycor() > 250 or ball.ycor() < -250:
-        ball.y_bounce()
+        # Collision with Paddle
+        if ball.distance(l_paddle) < 50 or ball.xcor() < -350 or ball.distance(r_paddle) < 50 or ball.xcor() > 350:
+            ball.increase_speed()
+            ball.x_bounce()
+            music.play_Paddle_Collision()
+
+        # if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < r_paddle.ycor() + 50 and ball.ycor() > r_paddle.ycor() - 50):
+        #     ball.increase_speed()
+        #     ball.x_bounce()
+        #     music.play_Paddle_Collision()
+        #
+        # if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < l_paddle.ycor() + 50 and ball.ycor() > l_paddle.ycor() - 50):
+        #     ball.increase_speed()
+        #     ball.x_bounce()
+        #     music.play_Paddle_Collision()
+
+        # Increasing Score
+        if ball.xcor() > 350:
+            music.play_Wall_Collision()
+            ball.reset_position()
+            scoreboard.l_points()
+
+        if ball.xcor() < -350:
+            music.play_Wall_Collision()
+            ball.reset_position()
+            scoreboard.r_points()
+
+        # Game Over and Final Result
+        if scoreboard.l_score >= win_score:
+            # game_is_On = False
+            is_paused = False
+            music.play_Winning_Sound()
+            Scoreboard.game_over(ball, scoreboard.player1, scoreboard.l_score)
+            # if is_paused == False or game_is_On == False:
+            #     final_time = elapsed_time
+            #     print(f"Final TIme: {final_time}")
+            # Final.penup()
+            # Final.color("red")
+            # Final.goto(0, -60)
+            # Final.clear()
+            # Final.write(f"Game Ended in: {final_time}", False, align="center", font=("courier", 18, "bold"))
+            # Final.hideturtle()
 
 
-    # # Collision of Paddle with Upper
-    # if l_paddle.ycor() > 250 or r_paddle.ycor() > 250:
-    #     l_paddle.stop_move()
-    #     r_paddle.stop_move()
+        if scoreboard.r_score >= win_score:
+            # game_is_On = False
+            is_paused = False
+            music.play_Winning_Sound()
+            Scoreboard.game_over(ball, scoreboard.player2, scoreboard.r_score)
+            # if is_paused == False or game_is_On == False:
+            #     final_time = elapsed_time
+            #     print(f"Final TIme: {final_time}")
+            # Final.penup()
+            # Final.color("red")
+            # Final.goto(0, -60)
+            # Final.clear()
+            # Final.write(f"Game Ended in: {final_time}", False, align="center", font=("courier", 18, "bold"))
+            # Final.hideturtle()
 
 
-    # Collision with Paddle
-    # if ball.distance(l_paddle) < 50 or ball.xcor() < -350 or ball.distance(r_paddle) < 50 or ball.xcor() > 350:
-    #     ball.increase_speed()
-    #     ball.x_bounce()
-    #     music.play_Paddle_Collision()
 
-    if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < r_paddle.ycor() + 50 and ball.ycor() > r_paddle.ycor() - 50):
-        # ball.increase_speed()
-        ball.setx(340)
-        ball.y_bounce()
-        # music.play_Paddle_Collision()
-
-    if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < l_paddle.ycor() + 50 and ball.ycor() > l_paddle.ycor() - 50):
-        # ball.increase_speed()
-        ball.setx(-340)
-        ball.y_bounce()
-        # music.play_Paddle_Collision()
-
-    # Increasing Score
-    if ball.xcor() > 350:
-        music.play_Wall_Collision()
-        ball.reset_position()
-        scoreboard.l_points()
-
-    if ball.xcor() < -350:
-        music.play_Wall_Collision()
-        ball.reset_position()
-        scoreboard.r_points()
-
-    # Game Over and Final Result
-    if scoreboard.l_score >= win_score:
-        game_is_On = False
-        music.play_Winning_Sound()
-        Scoreboard.game_over(ball,scoreboard.player1, scoreboard.l_score)
-    if scoreboard.r_score >= win_score:
-        game_is_On = False
-        music.play_Winning_Sound()
-        Scoreboard.game_over(ball,scoreboard.player2, scoreboard.r_score)
-
-screen.exitonclick()
+        # game_is_On = False
+    else:
+        screen.update()
